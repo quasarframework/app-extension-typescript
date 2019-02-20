@@ -14,5 +14,9 @@
   "dependencies": {
     "ts-loader": "^5.3.3",
     "typescript": "^3.3.3"
+  },
+  "devDependencies": {
+    "vue-class-component": "^7.0.1",
+    "vue-property-decorator": "^7.3.0"
   }
 }
