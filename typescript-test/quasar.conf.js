@@ -1,5 +1,19 @@
 // Configuration for your app
 
+const extendTypescriptToWebpack = (config) => {
+  config.resolve
+    .extensions
+      .add('.ts')
+  config.module
+    .rule('typescript')
+      .test(/\.tsx?$/)
+      .use('typescript')
+        .loader('ts-loader')
+        .options({
+          appendTsSuffixTo: [/\.vue$/]
+        })
+}
+
 module.exports = function (ctx) {
   return {
     // app boot file (/src/boot)
@@ -61,13 +75,15 @@ module.exports = function (ctx) {
       // analyze: true,
       // extractCSS: false,
       extendWebpack (cfg) {
-        extendTypescriptToWebpack(cfg)
         cfg.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
           loader: 'eslint-loader',
           exclude: /node_modules/
         })
+      },
+      chainWebpack (cfg) {
+        extendTypescriptToWebpack(cfg)
       }
     },
 
@@ -153,13 +169,4 @@ module.exports = function (ctx) {
       }
     }
   }
-}
-
-function extendTypescriptToWebpack(cfg) {
-  cfg.resolve.extensions.push('.ts')
-  cfg.module.rules.push({
-    test: /\.ts$/,
-    loader: 'ts-loader',
-    options: { appendTsSuffixTo: [/\.vue$/] }
-  })
 }
