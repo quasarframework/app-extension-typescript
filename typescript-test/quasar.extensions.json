@@ -10,5 +10,6 @@
     "harnesses": [
       "unit-jest"
     ]
-  }
+  },
+  "@quasar/typescript": {}
 }

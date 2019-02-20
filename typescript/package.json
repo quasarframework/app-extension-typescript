@@ -1,6 +1,6 @@
 {
-  "name": "quasar-app-extension-typescript",
-  "version": "0.0.1",
+  "name": "@quasar/quasar-app-extension-typescript",
+  "version": "1.0.0-alpha.1",
   "description": "A Quasar CLI Extension",
   "author": "Daniel Thompson-Yvetot <35242872+nothingismagick@users.noreply.github.com>",
   "scripts": {
