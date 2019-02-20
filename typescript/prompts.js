@@ -13,14 +13,15 @@ module.exports = function () {
       name: 'installType',
       type: 'list',
       required: true,
-      message: 'Please choose how to install required babel rules:',
+      message: 'Please choose how to install typescript:',
       choices: [
         {
-          name: 'Overwrite babel.config.js and use additional .babelrc',
-          value: 'simple'
+          name: 'JS & TS (permit both)',
+          value: 'mixed',
+          default: true
         },
         {
-          name: 'Do nothing, I will manage myself',
+          name: 'Only Typescript (',
           value: 'full'
         }
       ]
