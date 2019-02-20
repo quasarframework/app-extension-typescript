@@ -61,6 +61,7 @@ module.exports = function (ctx) {
       // analyze: true,
       // extractCSS: false,
       extendWebpack (cfg) {
+        extendTypescriptToWebpack(cfg)
         cfg.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
@@ -152,4 +153,13 @@ module.exports = function (ctx) {
       }
     }
   }
+}
+
+function extendTypescriptToWebpack(cfg) {
+  cfg.resolve.extensions.push('.ts')
+  cfg.module.rules.push({
+    test: /\.ts$/,
+    loader: 'ts-loader',
+    options: { appendTsSuffixTo: [/\.vue$/] }
+  })
 }
