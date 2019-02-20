@@ -6,5 +6,17 @@
  */
 
 module.exports = function (api, ctx) {
-  //
+  api.chainWebpack((chain, invoke) => {
+    chain.resolve
+      .extensions
+      .add('.ts')
+    chain.module
+      .rule('typescript')
+      .test(/\.tsx?$/)
+      .use('typescript')
+      .loader('ts-loader')
+      .options({
+        appendTsSuffixTo: [/\.vue$/]
+      })
+  })
 }

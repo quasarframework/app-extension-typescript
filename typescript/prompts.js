@@ -5,36 +5,25 @@
  * (answers are available as "api.prompts" in the other scripts)
  * https://www.npmjs.com/package/inquirer#question
  *
- * Example:
+ */
 
+module.exports = function () {
   return [
-    name: {
-      type: 'string',
+    {
+      name: 'installType',
+      type: 'list',
       required: true,
-      message: 'Quasar CLI Extension name (without prefix)',
-    },
-    preset: {
-      type: 'checkbox',
-      message: 'Check the features needed for your project:',
+      message: 'Please choose how to install required babel rules:',
       choices: [
         {
-          name: 'Install script',
-          value: 'install'
+          name: 'Overwrite babel.config.js and use additional .babelrc',
+          value: 'simple'
         },
         {
-          name: 'Prompts script',
-          value: 'prompts'
-        },
-        {
-          name: 'Uninstall script',
-          value: 'uninstall'
+          name: 'Do nothing, I will manage myself',
+          value: 'full'
         }
       ]
     }
   ]
-
- */
-
-module.exports = function () {
-  return []
 }
