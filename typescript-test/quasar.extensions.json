@@ -1,0 +1,14 @@
+{
+  "@quasar/testing-unit-jest": {
+    "babel": "babelrc",
+    "options": [
+      "SFC",
+      "scripts"
+    ]
+  },
+  "@quasar/testing": {
+    "harnesses": [
+      "unit-jest"
+    ]
+  }
+}
