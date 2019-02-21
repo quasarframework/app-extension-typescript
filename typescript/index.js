@@ -7,6 +7,7 @@
 
 module.exports = function (api, ctx) {
   api.chainWebpack((chain, invoke) => {
+    const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
     chain.resolve
       .extensions
         .add('.ts')
@@ -16,7 +17,10 @@ module.exports = function (api, ctx) {
         .use('typescript')
           .loader('ts-loader')
           .options({
-            appendTsSuffixTo: [/\.vue$/]
+            appendTsSuffixTo: [/\.vue$/],
+            // Type checking is handled by fork-ts-checker-webpack-plugin
+            transpileOnly: true
           })
+    chain.plugin('ts-checker').use(ForkTsCheckerWebpackPlugin)
   })
 }
