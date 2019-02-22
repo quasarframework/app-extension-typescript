@@ -11,6 +11,7 @@ module.exports = function (api, ctx) {
     chain.resolve
       .extensions
         .add('.ts')
+        .add('.tsx')
     chain.module
       .rule('typescript')
         .test(/\.tsx?$/)
