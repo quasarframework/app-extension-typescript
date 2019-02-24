@@ -5,7 +5,7 @@
  */
 
 module.exports = function (api) {
-  api.render('./templates', {}, true)
+  api.render('./templates/base', {}, true)
   if (api.prompts.installType === 'full') {
     api.render('./full', {}, true)
     console.log('here we would move component stuff over.')
