@@ -7,6 +7,11 @@
 module.exports = api =>
   new Promise(resolve => {
     api.render('./templates/base', {}, true)
+    api.extendPackageJson({
+      devDependencies: {
+        '@types/node': '11.9.5'
+      }
+    })
     if (api.prompts.rename) {
       const glob = require('glob')
       const fs = require('fs')
