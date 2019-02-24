@@ -7,24 +7,13 @@
  *
  */
 
-module.exports = function () {
+module.exports = function() {
   return [
     {
-      name: 'installType',
-      type: 'list',
+      name: 'rename',
+      type: 'confirm',
       required: true,
-      message: 'Please choose how to install typescript:',
-      choices: [
-        {
-          name: 'JS & TS (permit both)',
-          value: 'mixed',
-          default: true
-        },
-        {
-          name: 'Only Typescript (',
-          value: 'full'
-        }
-      ]
+      message: 'Rename .js files to .ts'
     }
   ]
 }
