@@ -52,8 +52,8 @@ sourceFiles: {
           if (err) throw err
           files.forEach(file => {
             let text = fs.readFileSync(file, 'utf8')
-            text = text.replace(/<script.*(lang=".{4}")?.*>/, tag => {
-              tag = tag.replace(/lang="js" ?/, '')
+            text = text.replace(/<script.*>/, tag => {
+              tag = tag.replace(/lang=".{1,4}" ?/, '')
               return tag.replace('<script', '<script lang="ts"')
             })
             fs.writeFileSync(file, text)
