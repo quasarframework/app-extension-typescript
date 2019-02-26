@@ -10,3 +10,8 @@ Add the app extension to your project:
 $ quasar ext --add @quasar/typescript
 ```
 
+To test the various build types, cd into test-extension and:
+```
+$ yarn
+$ quasar ext --add @quasar/typescript --skip-pkg
+```

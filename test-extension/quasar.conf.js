@@ -1,19 +1,5 @@
 // Configuration for your app
 
-const extendTypescriptToWebpack = (config) => {
-  config.resolve
-    .extensions
-      .add('.ts')
-  config.module
-    .rule('typescript')
-      .test(/\.tsx?$/)
-      .use('typescript')
-        .loader('ts-loader')
-        .options({
-          appendTsSuffixTo: [/\.vue$/]
-        })
-}
-
 module.exports = function (ctx) {
   return {
     // app boot file (/src/boot)
@@ -81,9 +67,6 @@ module.exports = function (ctx) {
           loader: 'eslint-loader',
           exclude: /node_modules/
         })
-      },
-      chainWebpack (cfg) {
-        extendTypescriptToWebpack(cfg)
       }
     },
 
