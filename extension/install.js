@@ -64,8 +64,37 @@ sourceFiles: {
               tag = tag.replace(/lang=".{1,4}" ?/, '')
               return tag.replace('<script', '<script lang="ts"')
             })
+            // Allow type-inference in components
+            text = text.replace(
+              /export default {(.*)}/s,
+              (match, componentData) =>
+                `import Vue from 'vue'\nexport default Vue.extend({${componentData}})`
+            )
             fs.writeFileSync(file, text)
           })
+          try {
+            const routesFilePath = api.resolve.app('./src/router/routes.ts')
+            let routesFile = fs.readFileSync(routesFilePath, 'utf8')
+            routesFile = `import { RouteConfig } from 'vue-router'` + routesFile
+            routesFile = routesFile.replace(
+              'const routes = [',
+              'const routes: RouteConfig[] = ['
+            )
+            fs.writeFileSync(routesFilePath, routesFile)
+          } catch (e) {
+            console.log('Could not add types to routes.ts')
+          }
+          try {
+            const routerFilePath = api.resolve.app('./src/router/index.ts')
+            let routerFile = fs.readFileSync(routerFilePath, 'utf8')
+            routerFile = routerFile.replace(
+              'scrollBehavior: () => ({ y: 0 }),',
+              'scrollBehavior: () => ({ y: 0, x: 0 }),'
+            )
+            fs.writeFileSync(routerFilePath, routerFile)
+          } catch (e) {
+            console.log('Could not add types to router.ts')
+          }
           resolve()
         })
       })
