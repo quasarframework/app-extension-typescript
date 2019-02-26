@@ -16,12 +16,13 @@ module.exports = function() {
       message: 'Please choose how to derive webpack:',
       choices: [
         {
-          name: 'Use vanilla ts-loader (recommended)',
-          value: 'vanilla'
+          name:
+            'Use the fork-ts-checker-webpack-plugin module for type-checking (recommended)',
+          value: 'plugin'
         },
         {
-          name: 'Use the fork-ts-checker-webpack-plugin module for type-checking',
-          value: 'plugin'
+          name: 'Use vanilla ts-loader',
+          value: 'vanilla'
         }
       ]
     },
