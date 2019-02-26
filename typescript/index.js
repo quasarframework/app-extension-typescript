@@ -7,6 +7,20 @@
 
 module.exports = function(api, ctx) {
   api.chainWebpack((chain, invoke) => {
+
+  if (api.prompts.webpack === 'vanilla') {
+    chain.resolve.extensions.add(".ts").add('.tsx')
+    chain.module
+      .rule("typescript")
+      .test(/\.tsx?$/)
+      .use("typescript")
+      .loader("ts-loader")
+      .options({
+        appendTsSuffixTo: [/\.vue$/],
+        onlyCompileBundledFiles: true
+      })
+
+  } else if (api.prompts.webpack === 'plugin') {
     const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
     chain.resolve.extensions.add('.ts').add('.tsx')
     chain.module
@@ -20,5 +34,6 @@ module.exports = function(api, ctx) {
         transpileOnly: true
       })
     chain.plugin('ts-checker').use(ForkTsCheckerWebpackPlugin, [{ vue: true }])
+  }
   })
 }
