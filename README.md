@@ -7,11 +7,11 @@ visit https://hackmd.io/Ypx6VMWUQp6R1iPyCvRHWQ?edit to join the conversation
 Add the app extension to your project:
 
 ```shell
-$ quasar ext --add @quasar/typescript
+$ quasar ext add @quasar/typescript
 ```
 
 To test the various build types, cd into test-extension and:
 ```
 $ yarn
-$ quasar ext --add @quasar/typescript --skip-pkg
+$ quasar ext invoke @quasar/typescript
 ```

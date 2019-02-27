@@ -1,6 +1,6 @@
 {
   "name": "@quasar/quasar-app-extension-typescript",
-  "version": "1.0.0-alpha.4",
+  "version": "1.0.0-alpha.5",
   "description": "A Quasar CLI Extension",
   "author": "Daniel Thompson-Yvetot <35242872+nothingismagick@users.noreply.github.com>",
   "scripts": {
@@ -11,6 +11,7 @@
     "npm": ">= 5.6.0",
     "yarn": ">= 1.6.0"
   },
+  "main": "src/index.js",
   "dependencies": {
     "execa": "^1.0.0",
     "fork-ts-checker-webpack-plugin": "^0.5.2",
