@@ -98,5 +98,7 @@ sourceFiles: {
           resolve()
         })
       })
+    } else {
+      resolve()
     }
   })
