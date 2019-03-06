@@ -66,9 +66,9 @@ sourceFiles: {
             })
             // Allow type-inference in components
             text = text.replace(
-              /export default {(.*)}/s,
-              (match, componentData) =>
-                `import Vue from 'vue'\nexport default Vue.extend({${componentData}})`
+              /export default {(.*)}(.*<\/script.*>)/s,
+              (match, componentData, extra) =>
+                `import Vue from 'vue'\nexport default Vue.extend({${componentData}})${extra}`
             )
             fs.writeFileSync(file, text)
           })
