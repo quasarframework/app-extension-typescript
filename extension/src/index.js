@@ -14,7 +14,7 @@ module.exports = function(api, ctx) {
     chain.module
       .rule('typescript')
       .test(/\.tsx?$/)
-      .use('typescript')
+      .use('ts-loader')
       .loader('ts-loader')
       .options({
         appendTsSuffixTo: [/\.vue$/],
