@@ -7,21 +7,9 @@
 
 module.exports = function(api, ctx) {
   api.chainWebpack((chain, invoke) => {
-
-  if (api.prompts.webpack === 'vanilla') {
-    chain.resolve.extensions.add(".ts").add('.tsx')
-    chain.module
-      .rule("typescript")
-      .test(/\.tsx?$/)
-      .use("typescript")
-      .loader("ts-loader")
-      .options({
-        appendTsSuffixTo: [/\.vue$/],
-        onlyCompileBundledFiles: true
-      })
-
-  } else if (api.prompts.webpack === 'plugin') {
     const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
+    const useForkTsChecker = api.prompts.webpack === 'plugin'
+
     chain.resolve.extensions.add('.ts').add('.tsx')
     chain.module
       .rule('typescript')
@@ -30,10 +18,14 @@ module.exports = function(api, ctx) {
       .loader('ts-loader')
       .options({
         appendTsSuffixTo: [/\.vue$/],
+        onlyCompileBundledFiles: !useForkTsChecker,
         // Type checking is handled by fork-ts-checker-webpack-plugin
-        transpileOnly: true
+        transpileOnly: useForkTsChecker
       })
-    chain.plugin('ts-checker').use(ForkTsCheckerWebpackPlugin, [{ vue: true }])
-  }
+    if (useForkTsChecker) {
+      chain
+        .plugin('ts-checker')
+        .use(ForkTsCheckerWebpackPlugin, [{ vue: true }])
+    }
   })
 }
