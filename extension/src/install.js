@@ -48,29 +48,51 @@ sourceFiles: {
       )
       fs.writeFileSync(quasarConfigPath, quasarConfig)
 
-      glob(api.resolve.app('src/**/*.js'), (err, files) => {
+      // List of files that export Vue instance
+      const vueComponentScriptFiles = []
+
+      glob(api.resolve.app('src/**/*.vue'), (err, files) => {
         if (err) throw err
         files.forEach(file => {
-          const newFile = path.parse(file)
-          newFile.ext = '.ts'
-          delete newFile.base
-          fs.renameSync(file, path.format(newFile))
+          const fileDir = path.parse(file).dir
+          let text = fs.readFileSync(file, 'utf8')
+
+          text = text.replace(/<script.*>/, tag => {
+            tag = tag.replace(/lang="(js|javascript)" ?/, '')
+            tag = tag.replace(/src="(.*)\.js"/, (tag, fileName) => {
+              // Record that file exports a Vue instance
+              vueComponentScriptFiles.push(path.join(fileDir, fileName + '.js'))
+              return `src="${fileName}.ts"`
+            })
+            return tag.replace('<script', '<script lang="ts"')
+          })
+          // Allow type-inference in components
+          text = text.replace(
+            /export default {(.*)}(.*<\/script.*>)/s,
+            (match, componentData, extra) =>
+              `import Vue from 'vue'\n\nexport default Vue.extend({${componentData}})${extra}`
+          )
+          fs.writeFileSync(file, text)
         })
-        glob(api.resolve.app('src/**/*.vue'), (err, files) => {
+        glob(api.resolve.app('src/**/*.js'), (err, files) => {
           if (err) throw err
           files.forEach(file => {
             let text = fs.readFileSync(file, 'utf8')
-            text = text.replace(/<script.*>/, tag => {
-              tag = tag.replace(/lang=".{1,4}" ?/, '')
-              return tag.replace('<script', '<script lang="ts"')
-            })
-            // Allow type-inference in components
-            text = text.replace(
-              /export default {(.*)}(.*<\/script.*>)/s,
-              (match, componentData, extra) =>
-                `import Vue from 'vue'\nexport default Vue.extend({${componentData}})${extra}`
-            )
-            fs.writeFileSync(file, text)
+            // Only change files that export a Vue instance
+            if (vueComponentScriptFiles.includes(file)) {
+              text = text.replace(
+                /export default {(.*)}/s,
+                (match, componentData) =>
+                  `import Vue from 'vue'\n\nexport default Vue.extend({${componentData}})`
+              )
+            }
+            const newFile = path.parse(file)
+            newFile.ext = '.ts'
+            delete newFile.base
+            // Write new file
+            fs.writeFileSync(path.format(newFile), text)
+            // Remove old file
+            fs.unlinkSync(file)
           })
           try {
             const routesFilePath = api.resolve.app('./src/router/routes.ts')
