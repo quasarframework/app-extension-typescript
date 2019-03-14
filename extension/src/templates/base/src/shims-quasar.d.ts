@@ -8,6 +8,6 @@ declare module 'vue/types/vue' {
 
 declare module 'vue/types/options' {
   interface ComponentOptions<V extends Vue> {
-    preFectch?: (options: any) => void | Promise<void>
+    preFetch?: (options: any) => void | Promise<void>
   }
 }
