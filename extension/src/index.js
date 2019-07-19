@@ -25,7 +25,8 @@ module.exports = function(api, ctx) {
     if (useForkTsChecker) {
       chain
         .plugin('ts-checker')
-        .use(ForkTsCheckerWebpackPlugin, [{ vue: true }])
+        // https://github.com/TypeStrong/fork-ts-checker-webpack-plugin#options
+        .use(ForkTsCheckerWebpackPlugin, [{ eslint: true, vue: true }])
     }
   })
 }
