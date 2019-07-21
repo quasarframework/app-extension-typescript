@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "allowJs": true,
     "sourceMap": true,
     "target": "es6",
     "strict": true,
@@ -8,7 +9,5 @@
     "moduleResolution": "node",
     "baseUrl": "."
   },
-  "include": [
-    "./src/**/*"
-  ]
+  "exclude": ["node_modules"]
 }
