@@ -1,8 +1,11 @@
 {
   "name": "@quasar/quasar-app-extension-typescript",
-  "version": "1.0.0-alpha.15",
+  "version": "1.0.0-beta.1",
   "description": "A Quasar CLI Extension",
-  "author": "Daniel Thompson-Yvetot <35242872+nothingismagick@users.noreply.github.com>",
+  "authors": [
+    "Daniel Thompson-Yvetot <denjell@quasar.dev>",
+    "Kerry Huguet <outofmemoryagain@gmail.com>"
+  ],
   "scripts": {
     "test": "echo \"No test specified\" && exit 0"
   },
@@ -21,6 +24,6 @@
     "vue-property-decorator": "^7.3.0",
     "vue-template-compiler": "^2.6.7"
   },
-  "devDependencies": {    
+  "devDependencies": {
   }
 }
