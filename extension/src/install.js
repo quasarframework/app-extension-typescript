@@ -8,18 +8,23 @@ const execa = require('execa')
 module.exports = async api => {
   // TODO we need a way to detect if ESLint was configured (maybe checking for .eslintrc.js? Or checking if ESLint dependency is present)
   // And if it is not, we must add it to the devDeps
+
+  let devDependencies = {
+    '@types/node': '11.9.5',
+    '@typescript-eslint/eslint-plugin': '^1.12.0',
+    '@typescript-eslint/parser': '^1.12.0',    
+    typescript: '^3.3.3'
+  }
+  if(api.prompts.prettier) {
+    devDependencies['eslint-config-prettier'] = '^6.0.0'
+  }
+
   api.render('./templates/base', {}, true)
   api.extendPackageJson({
     scripts: {
       lint: 'eslint --ext .js,.ts,.vue --ignore-path .gitignore ./'
     },
-    devDependencies: {
-      '@types/node': '11.9.5',
-      '@typescript-eslint/eslint-plugin': '^1.12.0',
-      '@typescript-eslint/parser': '^1.12.0',
-      'eslint-config-prettier': '^6.0.0',
-      typescript: '^3.3.3'
-    }
+    devDependencies
   })
 
   // TODO is there a way to automatically detect VSCode usage? Checking .vscode folder isn't a reliable indicator
@@ -45,7 +50,7 @@ module.exports = async api => {
       ]
     })
 
-    if (!fs.existsSync('.vscode/settings.json')) {
+    if (!fs.existsSync('.vscode/extensions.json')) {
       fs.writeFileSync('.vscode/extensions.json', '{}')
     }
 
@@ -53,7 +58,6 @@ module.exports = async api => {
       recommendations: [
         'esbenp.prettier-vscode',
         'dbaeumer.vscode-eslint',
-        'eamodio.gitlens',
         'octref.vetur'
       ],
       unwantedRecommendations: [
@@ -62,6 +66,12 @@ module.exports = async api => {
         'ms-vscode.vscode-typescript-tslint-plugin'
       ]
     })
+  }
+
+  if (api.prompts.prettier) {    
+    api.render('./templates/prettier')
+  } else {
+    api.render('./templates/noprettier')    
   }
 
   if (api.prompts.rename) {

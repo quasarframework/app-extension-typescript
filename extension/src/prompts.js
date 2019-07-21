@@ -37,6 +37,12 @@ module.exports = function() {
       type: 'confirm',
       required: true,
       message: 'Will you use VSCode for this project? (Adds ESLint and Vetur configuration quirks, you must manually install the extensions)'
+    },
+    {
+      name: 'prettier',
+      type: 'confirm',
+      required: true,
+      message: 'Generate prettier configuration (ESLint and VScode, if used)?'
     }
   ]
 }
