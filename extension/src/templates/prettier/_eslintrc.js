@@ -51,7 +51,9 @@ module.exports = {
     ga: true, // Google Analytics
     cordova: true,
     __statics: true,
-    process: true
+    process: true,
+    module: true,
+    require: true
   },
 
   // add your custom rules here
@@ -59,6 +61,7 @@ module.exports = {
     'prefer-promise-reject-errors': 'off',
     quotes: ['warn', 'single'],
     '@typescript-eslint/indent': ['warn', 2],
+    '@typescript-eslint/camelcase': 'off',
 
     // allow console.log during development only
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
