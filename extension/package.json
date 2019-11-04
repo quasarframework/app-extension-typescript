@@ -4,15 +4,9 @@
   "license": "MIT",
   "description": "A Quasar CLI Extension",
   "author": {
-    "name": "Daniel Thompson-Yvetot",
-    "email": "denjell@quasar.dev"
+    "name": "Kerry Huguet",
+    "email": "outofmemoryagain@gmail.com"
   },
-  "contributors": [
-    {
-      "name": "Kerry Huguet",
-      "email": "outofmemoryagain@gmail.com"
-    }
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/quasarframework/app-extension-typescript"
