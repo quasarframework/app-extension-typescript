@@ -182,11 +182,18 @@ sourceFiles: {
 
   // TODO: detect if npm or yarn was used
   // TODO: some files need typings for theirs parameters (eg. axios and i18n boot files)
-  execa('yarn').then(() =>
+
+  if (api.prompts.packageManager === 'npm') {
+    execa('npm', ['run', 'lint', '--fix']).catch(() => {
+      // We'll always get some lint errors until we switch all files to ES6 syntax
+      //  or programmatically add `eslint-env node` around and `eslint-disable-next-line` for
+      //  problematic points
+    })
+  } else {
     execa('yarn', ['lint', '--fix']).catch(() => {
       // We'll always get some lint errors until we switch all files to ES6 syntax
       //  or programmatically add `eslint-env node` around and `eslint-disable-next-line` for
       //  problematic points
     })
-  )
+  }
 }
