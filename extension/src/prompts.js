@@ -10,6 +10,22 @@
 module.exports = function() {
   return [
     {
+      name: 'packageManager',
+      type: 'list',
+      required: true,
+      message: 'Please choose your package manager:',
+      choices: [
+        {
+          name: 'NPM',
+          value: 'npm'
+        },
+        {
+          name: 'Yarn',
+          value: 'yarn'
+        }
+      ]
+    },
+    {
       name: 'webpack',
       type: 'list',
       required: true,
