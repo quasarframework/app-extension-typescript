@@ -9,7 +9,8 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "types": [
-      "quasar"
+      "quasar",
+      "node"
     ]
   },
   "exclude": ["node_modules", "./**/*.js"]
