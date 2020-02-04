@@ -11,9 +11,9 @@ module.exports = async api => {
 
   let devDependencies = {
     '@types/node': '11.9.5',
-    '@typescript-eslint/eslint-plugin': '^1.12.0',
-    '@typescript-eslint/parser': '^1.12.0',    
-    typescript: '^3.3.3'
+    '@typescript-eslint/eslint-plugin': '^2.19.0',
+    '@typescript-eslint/parser': '^2.19.0',
+    typescript: '>=3.2.1 <3.8.0'
   }
   if(api.prompts.prettier) {
     devDependencies['eslint-config-prettier'] = '^6.0.0'
