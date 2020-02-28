@@ -2,7 +2,8 @@
 
 > ### WARNING
 >
-> This app extension has been updated to work with changes that will be released with `@quasar/app - 1.0.0-beta.9`. If you have not upgraded to at least `1.0.0-beta.9` this app extension will not work.
+> This app extension is out of date with the Current version of Quasar app-v1.6.0 and will may not work as expected.  This extension will be updated shortly.
+> An updated starter that support Typescript natively is currently being tested and should be integrated with the `Quasar create` command soon.  If you would like to try it out now run the following command `quasar create <project name> --kit IlCallo/quasar-starter-kit --branch dev`
 
 Add typescript to your Quasar 1.0 project
 
