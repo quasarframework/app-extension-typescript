@@ -19,15 +19,16 @@ function extendPackageJson(api) {
   const devDependencies = {
     '@quasar/app': '^1.6.0',
     '@types/node': '^10.17.15',
-    '@typescript-eslint/eslint-plugin': '^2.17.0',
-    '@typescript-eslint/parser': '^2.17.0',
-    'eslint-config-quasar': 'file:../quasar/eslint-config-quasar',
+    '@typescript-eslint/eslint-plugin': '^2.22.0',
+    '@typescript-eslint/parser': '^2.22.0',
+    'eslint-plugin-vue': '^6.2.1',
     ...(api.prompts.componentStyle === 'composition'
       ? { '@vue/composition-api': '^0.5.0' }
       : {}),
     ...(api.prompts.componentStyle === 'class'
       ? { 'vue-class-component': '^7.2.2', 'vue-property-decorator': '^8.3.0' }
       : {}),
+    ...(api.prompts.prettier ? { 'eslint-config-prettier': '^6.10.0' } : {}),
     ...(!api.hasPackage('eslint', '>=6') ? { eslint: '^6.8.0' } : {}),
   }
 
@@ -376,12 +377,6 @@ module.exports = async (api) => {
       "Linter found some errors which wasn'n able to automatically fix, please fix them manually"
     )
   }
-
-  // Remove typescript dependency, if present, because it's already provided by "@quasar/app"
-  await execa(nodePackager, [
-    nodePackager === 'npm' ? 'uninstall' : 'remove',
-    'typescript',
-  ])
 
   // TODO: for some reason, calling quasar cli into here prevents render commands to take place
   // console.log(
