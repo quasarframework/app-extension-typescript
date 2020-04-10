@@ -13,32 +13,30 @@ function abort(message) {
 
 function extendPackageJson(api) {
   const dependencies = {
-    quasar: '^1.9.2'
+    quasar: '^1.9.2',
   }
 
-  // TODO: we need a way to detect if ESLint was configured (maybe checking for .eslintrc.js? Or checking if ESLint dependency is present)
-  // And if it is not, we must add it to the devDeps
   const devDependencies = {
     '@quasar/app': '^1.6.0',
     '@types/node': '^10.17.15',
     '@typescript-eslint/eslint-plugin': '^2.17.0',
+    '@typescript-eslint/parser': '^2.17.0',
     'eslint-config-quasar': 'file:../quasar/eslint-config-quasar',
     ...(api.prompts.componentStyle === 'composition'
-      ? { '@vue/composition-api': '^0.4.0' }
+      ? { '@vue/composition-api': '^0.5.0' }
       : {}),
     ...(api.prompts.componentStyle === 'class'
       ? { 'vue-class-component': '^7.2.2', 'vue-property-decorator': '^8.3.0' }
       : {}),
     ...(!api.hasPackage('eslint', '>=6') ? { eslint: '^6.8.0' } : {}),
-    typescript: '^3.7.5'
   }
 
   api.extendPackageJson({
     dependencies,
     devDependencies,
     scripts: {
-      lint: 'eslint --ext .js,.ts,.vue --ignore-path .gitignore ./'
-    }
+      lint: 'eslint --ext .js,.ts,.vue --ignore-path .gitignore ./',
+    },
   })
 }
 
@@ -56,7 +54,7 @@ function vsCodeConfiguration(api) {
     'vetur.validation.template': false,
     'eslint.validate': ['javascript', 'javascriptreact', 'typescript', 'vue'],
     'typescript.tsdk': 'node_modules/typescript/lib',
-    ...(api.prompts.prettier ? { 'vetur.format.enable': false } : {})
+    ...(api.prompts.prettier ? { 'vetur.format.enable': false } : {}),
   })
 
   if (!fs.existsSync('.vscode/extensions.json')) {
@@ -67,13 +65,13 @@ function vsCodeConfiguration(api) {
     recommendations: [
       ...(api.prompts.prettier ? ['esbenp.prettier-vscode'] : []),
       'dbaeumer.vscode-eslint',
-      'octref.vetur'
+      'octref.vetur',
     ],
     unwantedRecommendations: [
       'hookyqr.beautify',
       'dbaeumer.jshint',
-      'ms-vscode.vscode-typescript-tslint-plugin'
-    ]
+      'ms-vscode.vscode-typescript-tslint-plugin',
+    ],
   })
 }
 
@@ -138,15 +136,16 @@ function disableBuildLintingOnDev(quasarConfigText) {
 
   return quasarConfigText.replace(
     replaceRegex,
-    match => `if (process.env.NODE_ENV === 'production') {\n${match}\n}`
+    (match) => `if (process.env.NODE_ENV === 'production') {\n${match}\n}`
   )
 }
 
-function addBootHelper(bootFolder) {
+function addBootHelper(api) {
+  const bootFolder = api.resolve.src('boot')
   const bootFiles = fs
     .readdirSync(bootFolder)
-    .filter(fileName => fileName !== '.gitkeep')
-    .map(fileName => path.join(bootFolder, fileName))
+    .filter((fileName) => fileName !== '.gitkeep')
+    .map((fileName) => path.join(bootFolder, fileName))
 
   for (const bootFile of bootFiles) {
     let bootFileContent = fs.readFileSync(bootFile, 'utf8')
@@ -185,6 +184,53 @@ function addBootHelper(bootFolder) {
   }
 }
 
+function addRouteHelper(api) {
+  const routerFilePath = api.resolve.src('./router/index.js')
+  let routerFileContent = fs.readFileSync(routerFilePath, 'utf8')
+
+  // We skip the file if route() helper is already there or if no function is returned
+  if (
+    routerFileContent.includes('export default route') ||
+    !routerFileContent.includes('export default')
+  ) {
+    return
+  }
+
+  routerFileContent =
+    routerFileContent.replace(
+      'export default',
+      `import { route } from 'quasar/wrappers';\n\nexport default route(`
+    ) + ')'
+
+  fs.writeFileSync(routerFilePath, routerFileContent)
+}
+
+function addStoreHelper(api) {
+  const storeFilePath = api.resolve.src('./store/index.js')
+  // We skip the update if store hasn't been used
+  if (!fs.existsSync(storeFilePath)) {
+    return
+  }
+
+  let storeFileContent = fs.readFileSync(storeFilePath, 'utf8')
+
+  // We skip the file if route() helper is already there or if no function is returned
+  if (
+    storeFileContent.includes('export default store') ||
+    !storeFileContent.includes('export default')
+  ) {
+    return
+  }
+
+  storeFileContent =
+    storeFileContent.replace(
+      'export default',
+      `import { store } from 'quasar/wrappers';\n\nexport default store(`
+    ) + ')'
+
+  fs.writeFileSync(storeFilePath, storeFileContent)
+}
+
 async function updateCode(api) {
   const util = require('util')
   const glob = util.promisify(require('glob'))
@@ -198,7 +244,9 @@ async function updateCode(api) {
 
   fs.writeFileSync(quasarConfigPath, quasarConfigText)
 
-  addBootHelper(api.resolve.src('boot'))
+  addBootHelper(api)
+  addRouteHelper(api)
+  addStoreHelper(api)
 
   // List of files that export Vue instance
   const vueComponentScriptFiles = []
@@ -210,11 +258,11 @@ async function updateCode(api) {
       : `import Vue from 'vue'\n\nexport default Vue.extend`
 
   const vueFiles = await glob(api.resolve.app('src/**/*.vue'))
-  vueFiles.forEach(file => {
+  vueFiles.forEach((file) => {
     const fileDir = path.parse(file).dir
     let text = fs.readFileSync(file, 'utf8')
 
-    text = text.replace(/<script.*>/, tag => {
+    text = text.replace(/<script.*>/, (tag) => {
       tag = tag.replace(/lang="(js|javascript)" ?/, '')
       tag = tag.replace(/src="(.*)\.js"/, (tag, fileName) => {
         // Record that file exports a Vue instance
@@ -234,7 +282,7 @@ async function updateCode(api) {
 
   const jsFiles = await glob(api.resolve.app('src/**/*.js'))
 
-  jsFiles.forEach(file => {
+  jsFiles.forEach((file) => {
     let text = fs.readFileSync(file, 'utf8')
     // Only change files that export a Vue instance
     if (vueComponentScriptFiles.includes(file)) {
@@ -278,13 +326,13 @@ async function updateCode(api) {
   }
 }
 
-module.exports = async api => {
+module.exports = async (api) => {
   api.compatibleWith('quasar', '>=1.0.0')
   api.compatibleWith('@quasar/app', '>=1.0.0')
 
   api.render('./templates/base', {
     useClassComponentStyle: api.prompts.componentStyle === 'class',
-    withPrettier: api.prompts.prettier
+    withPrettier: api.prompts.prettier,
   })
 
   extendPackageJson(api)
@@ -329,9 +377,16 @@ module.exports = async api => {
     )
   }
 
-  console.log(
-    "@quasar/typescript AE will now uninstall its dependency because it's no longer needed"
-  )
-  await execa('quasar', ['ext', 'remove', '@quasar/typescript'])
-  console.log('@quasar/typescript AE succesfully uninstalled its dependency!')
+  // Remove typescript dependency, if present, because it's already provided by "@quasar/app"
+  await execa(nodePackager, [
+    nodePackager === 'npm' ? 'uninstall' : 'remove',
+    'typescript',
+  ])
+
+  // TODO: for some reason, calling quasar cli into here prevents render commands to take place
+  // console.log(
+  //   "@quasar/typescript AE will now uninstall its dependency because it's no longer needed"
+  // )
+  // await execa('quasar', ['ext', 'remove', '@quasar/typescript'])
+  // console.log('@quasar/typescript AE succesfully uninstalled its dependency!')
 }
