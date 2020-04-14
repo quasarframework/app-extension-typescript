@@ -1,5 +1,3 @@
-<!-- This file is duplicated into '/extension' to make it visible on NPM publication -->
-
 # quasar-app-extension-typescript
 
 > ### WARNING
