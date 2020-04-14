@@ -10,33 +10,40 @@
 module.exports = function() {
   return [
     {
-      name: 'webpack',
+      name: 'codeUpdate',
+      type: 'confirm',
+      required: true,
+      message:
+        "Update code where possible (use this only if you're using code versioning and will be able to rollback)"
+    },
+    {
+      name: 'componentStyle',
       type: 'list',
       required: true,
-      message: 'Please choose how to derive webpack:',
+      message: 'Pick a component style:',
       choices: [
         {
           name:
-            'Use the fork-ts-checker-webpack-plugin module for type-checking (recommended)',
-          value: 'plugin'
+            'Composition API (recommended) (https://github.com/vuejs/composition-api)',
+          value: 'composition'
         },
         {
-          name: 'Use vanilla ts-loader',
-          value: 'vanilla'
+          name:
+            'Class-based (recommended) (https://github.com/vuejs/vue-class-component & https://github.com/kaorun343/vue-property-decorator)',
+          value: 'class'
+        },
+        {
+          name: 'None (keep old Object API)',
+          value: 'object'
         }
       ]
-    },
-    {
-      name: 'rename',
-      type: 'confirm',
-      required: true,
-      message: 'Rename .js files to .ts (experimental)'
     },
     {
       name: 'vscode',
       type: 'confirm',
       required: true,
-      message: 'Will you use VSCode for this project? (Adds ESLint and Vetur configuration quirks, you must manually install the extensions)'
+      message:
+        'Will you use VSCode for this project? (Adds ESLint and Vetur configuration quirks, you must manually install the extensions)'
     },
     {
       name: 'prettier',
