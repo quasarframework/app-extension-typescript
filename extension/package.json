@@ -22,13 +22,7 @@
   "main": "src/index.js",
   "dependencies": {
     "execa": "^3.2.0",
-    "fork-ts-checker-webpack-plugin": "^1.5.1",
-    "glob": "^7.1.4",
-    "ts-loader": "^6.2.0",
-    "vue-class-component": "^7.1.0",
-    "vue-property-decorator": "^8.3.0",
-    "vue-template-compiler": "^2.6.10"
+    "glob": "^7.1.4"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }
