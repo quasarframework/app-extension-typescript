@@ -9,7 +9,7 @@
 > ESLint configuration will be overwritten, only Prettier flavour is supported out-of-the-box.
 > `airbnb` and `default` configuration should be manually merged using your previous `.eslintrc.js` or one generated when creating a new Quasar project.
 >
-> You need to remove this extension and `typescript` dependency after a successful installation: the extension won't do anything else and is useless, while `typescript` dependency is already provided by `@quasar/app`
+> You need to remove this extension and `typescript` dependency after a successful installation: the extension will only do the migration and there's no point into keeping it after that, while `typescript` dependency is already provided by `@quasar/app`
 >
 > **This extension is one-shot and does not provide uninstall script, make sure you've some form of version control in place to perform rollbacks**
 
