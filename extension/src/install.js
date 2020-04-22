@@ -13,21 +13,21 @@ function abort(message) {
 
 function extendPackageJson(api) {
   const dependencies = {
-    quasar: '^1.9.2',
-  }
-
-  const devDependencies = {
-    '@quasar/app': '^1.6.0',
-    '@types/node': '^10.17.15',
-    '@typescript-eslint/eslint-plugin': '^2.22.0',
-    '@typescript-eslint/parser': '^2.22.0',
-    'eslint-plugin-vue': '^6.2.1',
+    quasar: '^1.9.15',
     ...(api.prompts.componentStyle === 'composition'
       ? { '@vue/composition-api': '^0.5.0' }
       : {}),
     ...(api.prompts.componentStyle === 'class'
       ? { 'vue-class-component': '^7.2.2', 'vue-property-decorator': '^8.3.0' }
       : {}),
+  }
+
+  const devDependencies = {
+    '@quasar/app': '^1.7.1',
+    '@types/node': '^10.17.15',
+    '@typescript-eslint/eslint-plugin': '^2.22.0',
+    '@typescript-eslint/parser': '^2.22.0',
+    'eslint-plugin-vue': '^6.2.1',
     ...(api.prompts.prettier ? { 'eslint-config-prettier': '^6.10.0' } : {}),
     ...(!api.hasPackage('eslint', '>=6') ? { eslint: '^6.8.0' } : {}),
   }
@@ -145,8 +145,9 @@ function addBootHelper(api) {
   const bootFolder = api.resolve.src('boot')
   const bootFiles = fs
     .readdirSync(bootFolder)
-    .filter((fileName) => fileName !== '.gitkeep')
     .map((fileName) => path.join(bootFolder, fileName))
+    // Excludes '.gitkeep' and subfolders
+    .filter((path) => fs.lstatSync(path).isFile() && !path.endsWith('.gitkeep'))
 
   for (const bootFile of bootFiles) {
     let bootFileContent = fs.readFileSync(bootFile, 'utf8')
