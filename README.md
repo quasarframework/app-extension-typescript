@@ -6,7 +6,9 @@
 >
 > This extension will bring you in sync with Quasar + TS setup as of `quasar@1.9.x` and `@quasar/app@1.6.x`
 >
-> This extension is DEPRECATED and is only meant to ease the transition of pre-existing codebases. For new projects use starter-kit `TypeScript` option
+> This extension is DEPRECATED and is only meant to ease the transition of pre-existing codebases. For new projects use starter-kit `TypeScript` option by installing `@quasar/cli` and running `quasar create <project-name>`
+>
+> Check out the [official documentation](https://quasar.dev/quasar-cli/installation).
 >
 > ESLint configuration will be overwritten, only Prettier flavour is supported out-of-the-box.
 > `airbnb` and `default` configuration should be manually merged using your previous `.eslintrc.js` or one generated when creating a new Quasar project.
