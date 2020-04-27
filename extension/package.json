@@ -1,6 +1,6 @@
 {
   "name": "@quasar/quasar-app-extension-typescript",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "description": "A Quasar CLI Extension",
   "author": {
