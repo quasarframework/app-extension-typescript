@@ -265,7 +265,7 @@ async function updateCode(api) {
     let text = fs.readFileSync(file, 'utf8')
 
     text = text.replace(/<script.*>/, (tag) => {
-      tag = tag.replace(/lang="(js|javascript)" ?/, '')
+      tag = tag.replace(/lang="(js|javascript|ts)" ?/, '')
       tag = tag.replace(/src="(.*)\.js"/, (tag, fileName) => {
         // Record that file exports a Vue instance
         vueComponentScriptFiles.push(path.join(fileDir, fileName + '.js'))
